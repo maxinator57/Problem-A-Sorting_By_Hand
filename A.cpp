@@ -1,6 +1,7 @@
 #include <iostream>
 
-using namespace std;
+using std::cin;
+using std::cout;
 
 struct node {
     int key;
@@ -11,12 +12,16 @@ struct node {
     }
 };
 
-node *Node;
-node *cur;
-
 node* merge_lists(node *root1, node *root2) {
-    cur = new node(0);
-    Node = cur;
+    node *start;
+    if (root1->key <= root2->key) {
+        start = root1;
+        root1 = root1->next;
+    } else {
+        start = root2;
+        root2 = root2->next;
+    }
+    node *cur = start;
     while (root1 != nullptr && root2 != nullptr) {
         if (root1->key <= root2->key) {
             cur->next = root1;
@@ -37,7 +42,7 @@ node* merge_lists(node *root1, node *root2) {
         root2 = root2->next;
         cur = cur->next;
     }
-    return Node->next;
+    return start;
 }
 
 node* merge_sort(node *root, int sz) {
@@ -54,7 +59,8 @@ node* merge_sort(node *root, int sz) {
 }
 
 int main() {
-    int n, a;
+    size_t n;
+    int a;
     cin >> n >> a;
     node *root = new node(a);
     node *last = root;
@@ -67,6 +73,8 @@ int main() {
     node *ans = merge_sort(root, n);
     while (ans != nullptr) {
         cout << ans->key << " ";
+        node *next = ans->next;
+        delete ans;
         ans = ans->next;
     }
 }
