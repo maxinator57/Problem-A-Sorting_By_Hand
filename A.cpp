@@ -64,7 +64,7 @@ int main() {
     cin >> n >> a;
     node *root = new node(a);
     node *last = root;
-    for (int i = 1; i < n; ++i) {
+    for (size_t i = 1; i < n; ++i) {
         cin >> a;
         node *new_node = new node(a);
         last->next = new_node;
