@@ -3,17 +3,19 @@
 using std::cin;
 using std::cout;
 
+template<typename T>
 struct node {
-    int key;
+    T key;
     node *next;
-    node(int n) {
+    node(T n) {
         key = n;
         next = nullptr;
     }
 };
 
-node* merge_lists(node *root1, node *root2) {
-    node *start;
+template<typename T>
+node<T>* merge_lists(node<T> *root1, node<T> *root2) {
+    node<T> *start;
     if (root1->key <= root2->key) {
         start = root1;
         root1 = root1->next;
@@ -21,7 +23,7 @@ node* merge_lists(node *root1, node *root2) {
         start = root2;
         root2 = root2->next;
     }
-    node *cur = start;
+    node<T> *cur = start;
     while (root1 != nullptr && root2 != nullptr) {
         if (root1->key <= root2->key) {
             cur->next = root1;
@@ -45,36 +47,37 @@ node* merge_lists(node *root1, node *root2) {
     return start;
 }
 
-node* merge_sort(node *root, int sz) {
+template<typename T>
+node<T>* merge_sort(node<T> *root, size_t sz) {
     if (sz == 1)
         return root;
-    int m = sz / 2;
-    node *median = root;
-    for (int i = 0; i < m - 1; ++i) {
+    size_t m = sz / 2;
+    node<T> *median = root;
+    for (size_t i = 0; i < m - 1; ++i) {
         median = median->next;
     }
-    node *median2 = median->next;
+    node<T> *median2 = median->next;
     median->next = nullptr;
     return merge_lists(merge_sort(root, m), merge_sort(median2, sz - m));
 }
 
 int main() {
-    size_t n;
-    int a;
+    size_t n = 0;
+    int a = 0;
     cin >> n >> a;
-    node *root = new node(a);
-    node *last = root;
+    node<int> *root = new node<int>(a);
+    node<int> *last = root;
     for (size_t i = 1; i < n; ++i) {
         cin >> a;
-        node *new_node = new node(a);
+        node<int> *new_node = new node<int>(a);
         last->next = new_node;
         last = new_node;
     }
-    node *ans = merge_sort(root, n);
+    node<int> *ans = merge_sort(root, n);
     while (ans != nullptr) {
         cout << ans->key << " ";
-        node *next = ans->next;
+        node<int> *next = ans->next;
         delete ans;
-        ans = ans->next;
+        ans = next;
     }
 }
